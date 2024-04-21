@@ -1,0 +1,18 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<div class="container">
+    <div class="form">
+        <h1 class="title">Create Master Password</h1>
+        <input #passwordInput (keyup)="onPasswordChange($event)" class="passwordinput" type="password" placeholder="Master password">
+        <a (click)="showPassword(passwordInput)">Show </a>
+        <input (keyup)="confirmPasswordEquality($event)" class="passwordinput" type="password" placeholder="Repeat password">
+        <p>Password status: {{ status }}</p>
+        <p class="warning" *ngIf="this.passwordLessThan14">Warning: Password must be at least 14 characters long</p>
+        <p class="warning" *ngIf="this.passwordHasSequencialNumber">Warning: Avoid using sequential numbers in your password</p>
+        <p class="warning" *ngIf="this.passwordHasLowerAndUpperCase">Warning: Password must contain both lowercase and uppercase letters</p>
+        <p class="error" *ngIf="this.passwordDontMatch">Error: Both password do not match</p>
+        <button [disabled]="!isButtonEnabled">Sign up</button>
+    </div>
+</div>
+<router-outlet></router-outlet>
