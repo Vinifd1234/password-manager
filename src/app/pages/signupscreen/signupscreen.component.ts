@@ -1,6 +1,12 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { NgxIndexedDBService, NgxIndexedDBModule } from 'ngx-indexed-db';
+import * as crypto from 'crypto-ts';
+import { WordArray } from 'crypto-ts/src/lib/WordArray';
+
+
 
 @Component({
   selector: 'app-signupscreen',
@@ -9,6 +15,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   templateUrl: './signupscreen.component.html',
   styleUrl: './signupscreen.component.css'
 })
+
 export class SignupscreenComponent {
   private password: string = "";
   private isStrong: Boolean = false;
@@ -22,10 +29,32 @@ export class SignupscreenComponent {
   public passwordHasSequencialNumber: Boolean = false;
   public passwordHasLowerAndUpperCase: Boolean = false;
   public passwordDontMatch: Boolean = false;
+  // handle "show" label
+  public showLabelStatus: string = "Show";
+
+  constructor (
+    private dbService: NgxIndexedDBService, 
+    private cookieService: CookieService,
+    private router: Router) {}
 
 
+    /*
+  ngOnInit() {
+     console.log(this.cookieService.getAll());
 
-  constructor() {}
+     let descriptografado: WordArray = crypto.AES.decrypt(this.cookieService.get("master"), 'test');
+     var plaintext = descriptografado.toString(crypto.enc.Utf8);
+     console.log(plaintext)
+     
+     
+    
+
+     if (crypto.AES.encrypt(this.cookieService.get("master"), 'test').toString() === crypto.AES.encrypt('321', 'test').toString()) {
+      
+     } else {
+      
+     }
+  } */
 
   onPasswordChange(event: KeyboardEvent) {
    const input = event.target as HTMLInputElement;
@@ -51,12 +80,24 @@ export class SignupscreenComponent {
 
   }
 
-  showPassword(passwordInput: HTMLInputElement) {
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
+  showPassword(passwordInput: HTMLInputElement, confirmPasswordInput: HTMLInputElement) {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      confirmPasswordInput.type = "text";
+      this.showLabelStatus = "Hide"
     } else {
-      passwordInput.type = 'password';
+      passwordInput.type = "password";
+      confirmPasswordInput.type = "password";
+      this.showLabelStatus = "Show"
     }
+  }
+
+  signUp() {
+   this.cookieService.set("master", crypto.AES.encrypt(this.password, 'testkey').toString());
+   alert("Master password has created with sucess");
+   // make route changing
+   this.router.navigate([''])
+
   }
 
   private checkPasswordStrength(password: string) {

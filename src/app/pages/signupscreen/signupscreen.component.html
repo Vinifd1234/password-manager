@@ -5,14 +5,14 @@
     <div class="form">
         <h1 class="title">Create Master Password</h1>
         <input #passwordInput (keyup)="onPasswordChange($event)" class="passwordinput" type="password" placeholder="Master password">
-        <a (click)="showPassword(passwordInput)">Show </a>
-        <input (keyup)="confirmPasswordEquality($event)" class="passwordinput" type="password" placeholder="Repeat password">
+        <a class="show" (click)="showPassword(passwordInput, confirmPasswordInput)">{{showLabelStatus}} </a>
+        <input #confirmPasswordInput (keyup)="confirmPasswordEquality($event)" class="passwordinput" type="password" placeholder="Repeat password">
         <p>Password status: {{ status }}</p>
         <p class="warning" *ngIf="this.passwordLessThan14">Warning: Password must be at least 14 characters long</p>
         <p class="warning" *ngIf="this.passwordHasSequencialNumber">Warning: Avoid using sequential numbers in your password</p>
         <p class="warning" *ngIf="this.passwordHasLowerAndUpperCase">Warning: Password must contain both lowercase and uppercase letters</p>
         <p class="error" *ngIf="this.passwordDontMatch">Error: Both password do not match</p>
-        <button [disabled]="!isButtonEnabled">Sign up</button>
+        <button (click)="signUp()" [disabled]="!isButtonEnabled">Sign up</button>
     </div>
 </div>
 <router-outlet></router-outlet>

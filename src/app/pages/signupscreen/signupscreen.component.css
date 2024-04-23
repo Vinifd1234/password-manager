@@ -40,3 +40,10 @@
     color: red;
 }
 
+.show {
+    color: blue;
+    font-style: italic;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
